@@ -1,7 +1,6 @@
 import {keyName} from "w3c-keyname"
 
-import {dropdownSelect, post, whenReady} from "fwtoolkit"
-import {plugins} from "../plugins/menu/index.js"
+import {dropdownSelect, whenReady} from "fwtoolkit"
 import {headerNavTemplate} from "./templates.js"
 
 // Bindings for the top menu on overview pages
@@ -195,12 +194,14 @@ export class SiteMenu {
                                 sessionStorage.removeItem(key)
                             }
                         }
-                        post("/api/user/logout/").then(
-                            () =>
-                                (window.location =
-                                    this.app.routes[""].app === "document"
-                                        ? "/"
-                                        : "/documents/")
+                        import("fwtoolkit/network").then(({post}) =>
+                            post("/api/user/logout/").then(
+                                () =>
+                                    (window.location =
+                                        this.app.routes[""].app === "document"
+                                            ? "/"
+                                            : "/documents/")
+                            )
                         )
                         break
                 }
@@ -212,19 +213,21 @@ export class SiteMenu {
         // Add plugins, but only once.
         if (!this.plugins) {
             this.plugins = {}
-
-            plugins.forEach(([app, plugin]) => {
-                if (!this.app.settings.APPS.includes(app)) {
-                    return
-                }
-                Object.values(plugin).forEach(pluginExport => {
-                    if (typeof pluginExport === "function") {
-                        this.plugins[pluginExport.name] = new pluginExport(this)
-                        this.plugins[pluginExport.name].init()
-                    }
-                })
-            })
         }
+
+        const plugins = this.app.menuPlugins || []
+
+        plugins.forEach(([app, plugin]) => {
+            if (!this.app.settings.APPS.includes(app)) {
+                return
+            }
+            Object.values(plugin).forEach(pluginExport => {
+                if (typeof pluginExport === "function") {
+                    this.plugins[pluginExport.name] = new pluginExport(this)
+                    this.plugins[pluginExport.name].init()
+                }
+            })
+        })
     }
 
     destroy() {
