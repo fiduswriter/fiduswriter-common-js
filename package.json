@@ -4,7 +4,7 @@
     "description": "Fidus Writer-specific shared utilities and UI chrome",
     "repository": {
         "type": "git",
-        "url": "ssh://git@codeberg.org/fiduswriter/fiduswriter-common.git"
+        "url": "ssh://git@codeberg.org/fiduswriter/fiduswriter-common-js.git"
     },
     "license": "AGPL-3.0",
     "author": "Johannes Wilm",
