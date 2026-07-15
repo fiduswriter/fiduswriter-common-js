@@ -1,78 +1,92 @@
 {
-    "name": "@fiduswriter/common",
-    "version": "0.1.6",
-    "description": "Fidus Writer-specific shared utilities and UI chrome",
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@codeberg.org/fiduswriter/fiduswriter-common-js.git"
+  "name": "@fiduswriter/common",
+  "version": "0.1.6",
+  "description": "Fidus Writer-specific shared utilities and UI chrome",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@codeberg.org/fiduswriter/fiduswriter-common-js.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Johannes Wilm",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "license": "AGPL-3.0",
-    "author": "Johannes Wilm",
-    "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-        },
-        "./common": {
-            "types": "./dist/common/index.d.ts",
-            "default": "./dist/common/index.js"
-        },
-        "./feedback": {
-            "types": "./dist/feedback/index.d.ts",
-            "default": "./dist/feedback/index.js"
-        },
-        "./menu": {
-            "types": "./dist/menu/index.d.ts",
-            "default": "./dist/menu/index.js"
-        },
-        "./state_plugins": {
-            "types": "./dist/state_plugins/index.d.ts",
-            "default": "./dist/state_plugins/index.js"
-        },
-        "./state_plugins/contributor_input": {
-            "types": "./dist/state_plugins/contributor_input/index.d.ts",
-            "default": "./dist/state_plugins/contributor_input/index.js"
-        },
-        "./state_plugins/tag_input": {
-            "types": "./dist/state_plugins/tag_input/index.d.ts",
-            "default": "./dist/state_plugins/tag_input/index.js"
-        }
+    "./common": {
+      "types": "./dist/common/index.d.ts",
+      "default": "./dist/common/index.js"
     },
-    "files": [
-        "dist/",
-        "src/",
-        "README.md",
-        "LICENSE"
-    ],
-    "scripts": {
-        "build": "tsc",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm run build",
-        "typecheck": "tsc --noEmit",
-        "lint": "eslint src",
-        "lint:fix": "eslint src --fix",
-        "format": "prettier --write .",
-        "format:check": "prettier --check ."
+    "./feedback": {
+      "types": "./dist/feedback/index.d.ts",
+      "default": "./dist/feedback/index.js"
     },
-    "dependencies": {
-        "fwtoolkit": "^0.1.4",
-        "prosemirror-gapcursor": "^1.3.2",
-        "prosemirror-history": "^1.3.2",
-        "prosemirror-keymap": "^1.2.2",
-        "prosemirror-model": "^1.25.0",
-        "prosemirror-state": "^1.4.3",
-        "prosemirror-view": "^1.38.1",
-        "w3c-keyname": "2.2.8"
+    "./menu": {
+      "types": "./dist/menu/index.d.ts",
+      "default": "./dist/menu/index.js"
     },
-    "devDependencies": {
-        "@eslint/js": "^10.0.1",
-        "eslint": "^10.6.0",
-        "globals": "^15.15.0",
-        "prettier": "^3.5.3",
-        "typescript": "^6.0.3",
-        "typescript-eslint": "^8.62.0"
+    "./state_plugins": {
+      "types": "./dist/state_plugins/index.d.ts",
+      "default": "./dist/state_plugins/index.js"
+    },
+    "./state_plugins/contributor_input": {
+      "types": "./dist/state_plugins/contributor_input/index.d.ts",
+      "default": "./dist/state_plugins/contributor_input/index.js"
+    },
+    "./state_plugins/tag_input": {
+      "types": "./dist/state_plugins/tag_input/index.d.ts",
+      "default": "./dist/state_plugins/tag_input/index.js"
     }
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js"
+  },
+  "dependencies": {
+    "fwtoolkit": "^0.1.4",
+    "prosemirror-gapcursor": "^1.3.2",
+    "prosemirror-history": "^1.3.2",
+    "prosemirror-keymap": "^1.2.2",
+    "prosemirror-model": "^1.25.0",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-view": "^1.38.1",
+    "w3c-keyname": "2.2.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/jest": "^30.0.0",
+    "eslint": "^10.6.0",
+    "globals": "^15.15.0",
+    "happy-dom": "^20.10.6",
+    "jest": "^30.4.2",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.4.11",
+    "ts-jest-resolver": "^2.0.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.0"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,css,md,json,html}": [
+      "prettier --write"
+    ],
+    "*.{ts,js,mjs}": [
+      "eslint --fix"
+    ]
+  }
 }
