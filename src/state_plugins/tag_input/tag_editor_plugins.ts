@@ -2,8 +2,8 @@ import {Plugin} from "prosemirror-state"
 import {Decoration, DecorationSet} from "prosemirror-view"
 import type {EditorView} from "prosemirror-view"
 
-export const placeholderPlugin = (nodeTitle: string) =>
-    new Plugin({
+export const placeholderPlugin = (nodeTitle: string): Plugin<null> =>
+    new Plugin<null>({
         props: {
             decorations: (state): DecorationSet | undefined => {
                 const doc = state.doc
@@ -29,8 +29,8 @@ export const placeholderPlugin = (nodeTitle: string) =>
         }
     })
 
-export const pastePlugin = (editorView: EditorView) => {
-    return new Plugin({
+export const pastePlugin = (editorView: EditorView): Plugin<null> => {
+    return new Plugin<null>({
         props: {
             handleDOMEvents: {
                 paste(_view, event) {
