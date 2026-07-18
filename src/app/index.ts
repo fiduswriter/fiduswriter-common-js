@@ -27,6 +27,9 @@ import {OfflinePage} from "../pages/offline.js"
 import {SetupPage} from "../pages/setup.js"
 import {ContactsOverview} from "../user/contacts/index.js"
 import {Profile} from "../user/profile/index.js"
+import {baseBodyTemplate} from "../common/index.js"
+import {SiteMenu} from "../menu/index.js"
+import {FeedbackTab} from "../feedback/index.js"
 
 import type {ApiConnectors} from "../api/index.js"
 
@@ -168,17 +171,34 @@ export class App {
             bibliography: {
                 app: "bibliography",
                 requireLogin: true,
-                open: () =>
-                    import("@fiduswriter/bibliography-manager/overview").then(
+                open: () => {
+                    const dom = document.createElement("body")
+                    document.body = dom
+                    dom.classList.add("fw-scrollable")
+                    dom.innerHTML = baseBodyTemplate({
+                        contents: "",
+                        user: this.config.user as any,
+                        hasOverview: true,
+                        app: this.config as any
+                    })
+                    new SiteMenu(this.config as any, "bibliography").init()
+                    new FeedbackTab().init()
+                    const container = dom.querySelector(
+                        "#bibliographyOverview"
+                    ) as HTMLElement
+                    return import(
+                        "@fiduswriter/bibliography-manager/overview"
+                    ).then(
                         ({BibliographyOverview}: any) =>
                             new BibliographyOverview(
                                 {
                                     app: this.config,
-                                    container: document.body
+                                    container
                                 } as any,
                                 this.bibliographyOverviewPlugins as any
                             )
                     )
+                }
             },
             document: {
                 app: "document",
@@ -285,11 +305,28 @@ export class App {
             usermedia: {
                 app: "usermedia",
                 requireLogin: true,
-                open: () =>
-                    new ImageOverview({
-                        app: this.config,
-                        container: document.body
-                    } as any)
+                open: () => {
+                    const dom = document.createElement("body")
+                    document.body = dom
+                    dom.classList.add("fw-scrollable")
+                    dom.innerHTML = baseBodyTemplate({
+                        contents: "",
+                        user: this.config.user as any,
+                        hasOverview: true,
+                        app: this.config as any
+                    })
+                    new SiteMenu(this.config as any, "images").init()
+                    new FeedbackTab().init()
+                    const container = dom.querySelector(
+                        "#imageOverview"
+                    ) as HTMLElement
+                    return Promise.resolve(
+                        new ImageOverview({
+                            app: this.config,
+                            container
+                        } as any)
+                    )
+                }
             },
             templates: {
                 app: "user_template_manager",
