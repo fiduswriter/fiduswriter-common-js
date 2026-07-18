@@ -120,6 +120,7 @@ export class App {
         this.config = {}
         this.name = "Fidus Writer"
         this.config.app = this
+        this.config.goTo = (url: string) => this.goTo(url)
 
         this.appPlugins = pluginOpts.appPlugins ?? []
         this.menuPlugins = pluginOpts.menuPlugins ?? []
