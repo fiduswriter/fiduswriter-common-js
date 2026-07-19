@@ -184,7 +184,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js"
   },
   "dependencies": {
-    "@fiduswriter/bibliography-manager": "^0.1.14",
+    "@fiduswriter/bibliography-manager": "^0.1.16",
     "@fiduswriter/document": "^0.2.26",
     "@fiduswriter/document-template-editor": "^0.1.6",
     "@fiduswriter/image-manager": "^0.1.13",
