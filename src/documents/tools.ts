@@ -2,7 +2,7 @@ import type {Node, Schema} from "prosemirror-model"
 
 import {getSettings} from "@fiduswriter/document/schema/convert"
 import {acceptAllNoInsertions} from "@fiduswriter/document/transform"
-import {addAlert} from "fwtoolkit"
+import {addAlert, postJson} from "fwtoolkit"
 
 import type {DocumentListApi} from "../api/index.js"
 
@@ -23,7 +23,7 @@ export const getMissingDocumentListData = (
     ids: Array<number | string>,
     documentList: DocEntry[],
     schema: Schema,
-    documentListApi: DocumentListApi,
+    documentListApi: DocumentListApi | null,
     rawContent = false
 ): Promise<void> => {
     // get extra data for the documents identified by the ids and updates the
@@ -46,8 +46,16 @@ export const getMissingDocumentListData = (
     })
 
     if (incompleteIds.length > 0) {
-        return documentListApi
-            .getDocumentListExtra(incompleteIds)
+        const request = documentListApi
+            ? documentListApi.getDocumentListExtra(incompleteIds)
+            : postJson(
+                  "/api/document/documentlist/extra/",
+                  {ids: incompleteIds}
+              ).then(
+                  ({json: rawJson}) =>
+                      rawJson as Record<string, unknown>
+              )
+        return request
             .then((json: Record<string, unknown>) => {
                 const documents = json.documents as Array<Record<string, unknown>>
                 documents.forEach((extraValues: Record<string, unknown>) => {
