@@ -169,7 +169,7 @@ export class ContactsOverview {
             return cachedPromise.then(() => {})
         }
         return (this.app as any).apiConnectors.contacts.list()
-            .then(({json}: any) => {
+            .then((json: any) => {
                 return cachedPromise.then(oldJson => {
                     if (!deepEqual(json, oldJson)) {
                         this.updateIndexedDB(json)

@@ -50,7 +50,7 @@ export class DocTemplatesEditor {
                     id: this.id
                 })
             })
-            .then(({json}: any) => {
+            .then((json: any) => {
                 this.template = json
                 this.id = json.id
 

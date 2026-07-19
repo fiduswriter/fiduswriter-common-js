@@ -14,7 +14,7 @@ export class ContactInvite {
             return this.app.page.init()
         }
 
-        return this.app.apiConnectors.contacts.invite({key: this.key}).then(({json}: any) => {
+        return this.app.apiConnectors.contacts.invite({key: this.key}).then((json: any) => {
             window.history.replaceState({}, "", json.redirect)
             return this.app.selectPage()
         })

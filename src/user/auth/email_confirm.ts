@@ -58,7 +58,7 @@ export class EmailConfirm extends PreloginPage {
 
     getConfirmData(): Promise<void> {
         return (this.app as any).apiConnectors.userProfile.getConfirmKeyData({key: this.key})
-            .then(({json}: any) => {
+            .then((json: any) => {
                 this.username = json.username
                 this.email = json.email
                 this.validKey = true

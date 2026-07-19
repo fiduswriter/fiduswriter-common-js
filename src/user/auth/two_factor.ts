@@ -11,7 +11,7 @@ export const twoFactorSetupDialog = (app: any): Promise<any> => {
     let deviceId: string | null = null
 
     activateWait()
-    return app.apiConnectors.auth.twoFactorSetup().then(({json}: any): any => {
+    return app.apiConnectors.auth.twoFactorSetup().then((json: any): any => {
         deactivateWait()
 
         if (json.status !== "success") {
@@ -65,7 +65,7 @@ export const twoFactorSetupDialog = (app: any): Promise<any> => {
                         code,
                         device_id: deviceId
                     })
-                        .then(({json}: any) => {
+                        .then((json: any) => {
                             if (json.status === "success") {
                                 addAlert("success", json.message)
                                 dialog.close()
@@ -127,7 +127,7 @@ export const twoFactorDisableDialog = (app: any): any => {
             click: () => {
                 activateWait()
                 app.apiConnectors.auth.twoFactorDisable()
-                    .then(({json}: any) => {
+                    .then((json: any) => {
                         if (json.status === "success") {
                             addAlert("success", json.message)
                             dialog.close()
@@ -197,7 +197,7 @@ export const twoFactorLoginDialog = ({
                     remember,
                     twofactor
                 })
-                    .then(({json}: any) => {
+                    .then((json: any) => {
                         deactivateWait()
                         dialog.close()
                         loginPage.afterLogin(json)
@@ -235,7 +235,7 @@ export const twoFactorLoginDialog = ({
 
 export const checkTwoFactorStatus = (app: any): Promise<boolean> => {
     return app.apiConnectors.auth.twoFactorStatus()
-        .then(({json}: any) => {
+        .then((json: any) => {
             if (json.status === "success") {
                 return json.enabled
             }
