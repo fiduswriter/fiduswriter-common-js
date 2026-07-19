@@ -1,4 +1,4 @@
-import {CSL} from "citeproc-plus"
+import {CSL} from "@fiduswriter/document/citeproc-plus"
 
 import {BibliographyDB} from "@fiduswriter/bibliography-manager/database"
 import {ImageDB, ImageOverview} from "@fiduswriter/image-manager"

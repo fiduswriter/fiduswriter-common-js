@@ -1,6 +1,6 @@
 {
   "name": "@fiduswriter/frontend",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Fidus Writer-specific shared utilities and UI chrome",
   "repository": {
     "type": "git",
@@ -184,11 +184,11 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js"
   },
   "dependencies": {
-    "@fiduswriter/bibliography-manager": "^0.1.16",
-    "@fiduswriter/document": "^0.2.26",
-    "@fiduswriter/document-template-editor": "^0.1.6",
+    "@fiduswriter/bibliography-manager": "^0.1.17",
+    "@fiduswriter/document": "^0.2.27",
+    "@fiduswriter/document-template-editor": "^0.1.7",
     "@fiduswriter/image-manager": "^0.1.13",
-    "@fiduswriter/editor": "^0.1.46",
+    "@fiduswriter/editor": "^0.1.47",
     "downloadjs": "^1.4.7",
     "fwtoolkit": "^0.1.4",
     "jszip": "^3.10.1",
@@ -221,7 +221,8 @@
       "prettier --write"
     ],
     "*.{ts,js,mjs}": [
-      "eslint --fix"
+      "eslint --fix",
+      "sh -c 'npm run typecheck'"
     ]
   }
 }
