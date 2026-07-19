@@ -11,7 +11,6 @@ import {
     ensureCSS,
     escapeText,
     findTarget,
-    postJson,
     setDocTitle,
     shortFileTitle,
     whenReady
@@ -261,8 +260,8 @@ export class DocumentOverview {
             return cachedPromise.then(() => {})
         }
         return whenReady()
-            .then(() => postJson("/api/document/documentlist/"))
-            .then(({json}) => {
+            .then(() => (this.app as any).apiConnectors.documentList.getDocumentList())
+            .then((json) => {
                 const typedJson = json as Record<string, unknown>
                 return cachedPromise.then(oldJson => {
                     if (!deepEqual(typedJson, oldJson)) {
@@ -283,12 +282,9 @@ export class DocumentOverview {
 
     async bulkDecryptDocumentEncryptionKeys(): Promise<void> {
         try {
-            const response = await postJson(
-                "/api/document/encryption_key/get_all/",
-                {}
-            )
+            const response = await (this.app as any).apiConnectors.documentList.getEncryptionKeys()
 
-            if (!(response.json as any)?.keys?.length) {
+            if (!(response as any)?.keys?.length) {
                 return
             }
 
@@ -296,7 +292,7 @@ export class DocumentOverview {
                 "fwtoolkit/e2ee/passphrase-crypto"
             )
 
-            for (const keyData of (response.json as any).keys) {
+            for (const keyData of (response as any).keys) {
                 const {document_id, encrypted_key, encrypted_with_master_key} =
                     keyData
 

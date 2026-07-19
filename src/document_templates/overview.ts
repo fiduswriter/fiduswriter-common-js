@@ -8,7 +8,6 @@ import {
     ensureCSS,
     escapeText,
     findTarget,
-    getJson,
     setDocTitle,
     whenReady
 } from "fwtoolkit"
@@ -247,7 +246,7 @@ export class DocTemplatesOverview {
         if (this.app.isOffline()) {
             return this.showCached()
         }
-        return getJson("/api/user_template_manager/list/")
+        return (this.app as any).apiConnectors.documentTemplate.list()
             .then((json: any) => {
                 this.updateIndexedDB(json)
                 this.initializeView(json)

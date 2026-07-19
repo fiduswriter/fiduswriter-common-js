@@ -1,11 +1,13 @@
-import {Dialog, cancelPromise, escapeText, postJson} from "fwtoolkit"
+import {Dialog, cancelPromise, escapeText} from "fwtoolkit"
 import {addContactTemplate} from "./templates.js"
 
 export class AddContactDialog {
     settings: Record<string, unknown>
+    app: any
 
-    constructor(settings: Record<string, unknown>) {
+    constructor(settings: Record<string, unknown>, app: any) {
         this.settings = settings
+        this.app = app
     }
 
     init(): Promise<Array<Record<string, unknown>>> {
@@ -76,7 +78,7 @@ export class AddContactDialog {
             return cancelPromise()
         }
 
-        return postJson("/api/user/invites/add/", {
+        return this.app.apiConnectors.contacts.add({
             user_string: userString
         }).then(({json, status}: any) => {
             if (status == 201) {

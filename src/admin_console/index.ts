@@ -1,9 +1,13 @@
-import {addAlert, findTarget, getJson, postJson, whenReady} from "fwtoolkit"
+import {addAlert, findTarget, whenReady} from "fwtoolkit"
 
 // To see how many users are currently online and send them maintenance messages
 
 export class AdminConsole {
-    constructor() {}
+    app: any
+
+    constructor(app: any) {
+        this.app = app
+    }
 
     init(): void {
         whenReady().then(() => {
@@ -54,7 +58,7 @@ export class AdminConsole {
     }
 
     sendSystemMessage(message: string): Promise<void> {
-        return postJson("/api/base/send_system_message/", {message}).then(
+        return this.app.apiConnectors.systemMessage.send({message}).then(
             () => {
                 addAlert("info", gettext("Message delivered successfully!"))
                 const button = document.querySelector(
@@ -66,7 +70,7 @@ export class AdminConsole {
     }
 
     render(): Promise<void> {
-        return getJson("/api/base/connection_info/").then(
+        return this.app.apiConnectors.systemMessage.get().then(
             (data: unknown) => {
                 const {sessions, users} = data as {sessions: number; users: number}
                 const sessionCounterEl =

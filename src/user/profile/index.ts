@@ -8,7 +8,6 @@ import {
     dropdownSelect,
     ensureCSS,
     findTarget,
-    post,
     setDocTitle,
     whenReady
 } from "fwtoolkit"
@@ -51,7 +50,7 @@ export class Profile {
         this.clickTargets = {
             "#add-profile-email": (_el, _event) => addEmailDialog(this.app),
             "#fw-edit-profile-pwd": (_el, _event) =>
-                changePwdDialog({username: this.user.username}),
+                changePwdDialog({username: this.user.username, app: this.app}),
             "#delete-account": (_el, _event) => {
                 const dialog = new DeleteUserDialog(
                     (this.dom.querySelector("#delete-account") as HTMLElement).dataset.username!
@@ -97,12 +96,12 @@ export class Profile {
         if (this.app.settings.TWO_FACTOR_ENABLED) {
             this.clickTargets["#setup-two-factor"] = (_el, _event) => {
                 import("../auth/two_factor.js").then(({twoFactorSetupDialog}) => {
-                    twoFactorSetupDialog()
+                    twoFactorSetupDialog(this.app)
                 })
             }
             this.clickTargets["#disable-two-factor"] = (_el, _event) => {
                 import("../auth/two_factor.js").then(({twoFactorDisableDialog}) => {
-                    twoFactorDisableDialog()
+                    twoFactorDisableDialog(this.app)
                 })
             }
 
@@ -182,7 +181,7 @@ export class Profile {
 
     updateTwoFactorStatus(): void {
         import("../auth/two_factor.js").then(({checkTwoFactorStatus}) => {
-            checkTwoFactorStatus().then((enabled: boolean) => {
+            checkTwoFactorStatus(this.app).then((enabled: boolean) => {
                 const enabledStatus = this.dom.querySelector(
                     "#two-factor-enabled-status"
                 ) as HTMLElement
@@ -329,8 +328,8 @@ export class Profile {
         activateWait()
         const newLang = (this.dom.querySelector("#language") as HTMLSelectElement).value
         const inlineReferences = (this.dom.querySelector("#inline-references") as HTMLInputElement).checked
-        const inlineMath = (this.dom.querySelector("#inline-math") as HTMLInputElement).checked
-        post("/api/user/save/", {
+        const inlineMath = (this.dom.querySelector("#inline-math") as HTMLInputElement).checked;
+        (this.app as any).apiConnectors.userProfile.save({
             username: (this.dom.querySelector("#username") as HTMLInputElement).value,
             first_name: (this.dom.querySelector("#first_name") as HTMLInputElement).value,
             last_name: (this.dom.querySelector("#last_name") as HTMLInputElement).value,
@@ -338,7 +337,7 @@ export class Profile {
         })
             .catch(() => addAlert("error", gettext("Could not save profile data")))
             .then(() =>
-                post("/api/user/preferences/update/", {
+                (this.app as any).apiConnectors.userProfile.updatePreferences({
                     inline_references: inlineReferences,
                     inline_math: inlineMath
                 })

@@ -130,6 +130,7 @@ export class App {
 
         this.config.goTo = (url: string) => this.goTo(url)
         this.config.menuPlugins = this.menuPlugins
+        this.config.apiConnectors = this.apiConnectors
 
         this.routes = {
             "": {

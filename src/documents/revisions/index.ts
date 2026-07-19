@@ -7,29 +7,31 @@ import {
     deactivateWait,
     escapeText,
     findTarget,
-    get,
     longFilePath,
-    post,
     shortFileTitle
 } from "fwtoolkit"
 
 import {FidusFileImporter} from "../importer/native/file.js"
 import {documentrevisionsTemplate} from "./templates.js"
+import type {ApiConnectors} from "../../api/index.js"
 
 export class DocumentRevisionsDialog {
     documentId: number
     documentList: Array<Record<string, unknown>>
     user: Record<string, unknown>
+    apiConnectors: ApiConnectors
     dialog: any
 
     constructor(
         documentId: number,
         documentList: Array<Record<string, unknown>>,
-        user: Record<string, unknown>
+        user: Record<string, unknown>,
+        apiConnectors: ApiConnectors
     ) {
         this.documentId = documentId
         this.documentList = documentList
         this.user = user
+        this.apiConnectors = apiConnectors
         this.dialog = false
     }
 
@@ -86,8 +88,7 @@ export class DocumentRevisionsDialog {
         if (!doc) {
             return Promise.reject(new Error("Document not found"))
         }
-        return get(`/api/document/get_revision/${id}/`)
-            .then(response => response.blob())
+        return this.apiConnectors.revision.getRevisionBlob(id)
             .then(blob => {
                 const importer = new FidusFileImporter(
                     blob,
@@ -96,7 +97,11 @@ export class DocumentRevisionsDialog {
                         doc.title as string,
                         doc.path as string,
                         `${gettext("Revision of")} `
-                    )
+                    ),
+                    false,
+                    [],
+                    null,
+                    this.apiConnectors
                 )
                 return (importer as any).init()
             })
@@ -116,8 +121,7 @@ export class DocumentRevisionsDialog {
     }
 
     download(id: number, filename: string): void {
-        get(`/api/document/get_revision/${id}/`)
-            .then(response => response.blob())
+        this.apiConnectors.revision.getRevisionBlob(id)
             .then(blob => download(blob, filename, "application/fidus+zip"))
     }
 
@@ -160,7 +164,7 @@ export class DocumentRevisionsDialog {
     }
 
     deleteRevision(id: number): Promise<any> {
-        return post("/api/document/delete_revision/", {id})
+        return this.apiConnectors.revision.deleteRevision({id})
             .then(() => {
                 const thisTr = document.querySelector(`tr.revision-${id}`) as HTMLElement
                 const documentId = thisTr.dataset.document

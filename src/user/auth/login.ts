@@ -1,4 +1,4 @@
-import {escapeText, postJson} from "fwtoolkit"
+import {escapeText} from "fwtoolkit"
 import {PreloginPage} from "../../prelogin/index.js"
 
 export class LoginPage extends PreloginPage {
@@ -138,7 +138,7 @@ export class LoginPage extends PreloginPage {
             if (errors) {
                 return
             }
-            return postJson("/api/user/login/", {login, password, remember})
+            return (this.app as any).apiConnectors.auth.login({login, password, remember})
                 .catch((response: any) => {
                     if (!(response instanceof Response) || response.status !== 400) {
                         return Promise.reject(response)
@@ -157,7 +157,8 @@ export class LoginPage extends PreloginPage {
                                     login,
                                     password,
                                     remember,
-                                    loginPage: this
+                                    loginPage: this,
+                                    app: this.app
                                 })
                             })
                         } else {

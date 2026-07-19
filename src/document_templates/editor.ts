@@ -7,8 +7,6 @@ import {
     addAlert,
     ensureCSS,
     findTarget,
-    post,
-    postJson,
     setDocTitle,
     whenReady
 } from "fwtoolkit"
@@ -48,7 +46,7 @@ export class DocTemplatesEditor {
             .getStyles()
             .then(styles => {
                 this.citationStyles = styles
-                return postJson("/api/user_template_manager/get/", {
+                return (this.app as any).apiConnectors.documentTemplate.get({
                     id: this.id
                 })
             })
@@ -134,7 +132,7 @@ export class DocTemplatesEditor {
             this.showErrors(errors)
             return Promise.reject()
         } else {
-            return post("/api/user_template_manager/save/", {
+            return (this.app as any).apiConnectors.documentTemplate.save({
                 id: this.id,
                 value,
                 import_id,

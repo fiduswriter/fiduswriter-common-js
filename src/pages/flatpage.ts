@@ -1,4 +1,4 @@
-import {ensureCSS, postJson, whenReady} from "fwtoolkit"
+import {ensureCSS, whenReady} from "fwtoolkit"
 import {PreloginPage} from "../prelogin/index.js"
 import type {PreloginApp} from "../prelogin/index.js"
 
@@ -23,9 +23,8 @@ export class FlatPage extends PreloginPage {
     }
 
     getPageData(): Promise<void> {
-        return postJson("/api/base/flatpage/", {url: this.url})
-            .then(({json}) => {
-                const data = json as {title: string; content: string}
+        return (this.app as any).apiConnectors.flatPage.get(this.url)
+            .then((data: any) => {
                 this.title = data.title
                 this.contents = `<div class="fw-flatpage">
                     <h1 class="fw-login-title">${data.title}</h1>

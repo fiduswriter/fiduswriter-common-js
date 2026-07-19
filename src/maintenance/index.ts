@@ -3,14 +3,16 @@ import JSZip from "jszip"
 import {updateFile} from "@fiduswriter/document/importer/native/update"
 import {updateDoc} from "@fiduswriter/document/schema/convert"
 import {FW_DOCUMENT_VERSION} from "@fiduswriter/document/schema/index"
-import {addAlert, findTarget, get, post, postJson, whenReady} from "fwtoolkit"
+import {addAlert, findTarget, whenReady} from "fwtoolkit"
 
 export class DocMaintenance {
+    app: any
     batch: number
     revSavesLeft: number
     docTemplatesSavesLeft: number
 
-    constructor() {
+    constructor(app: any) {
+        this.app = app
         this.batch = 0
         this.revSavesLeft = 0
         this.docTemplatesSavesLeft = 0
@@ -37,7 +39,7 @@ export class DocMaintenance {
 
     getDocBatch(): void {
         this.batch++
-        postJson("/api/document/admin/get_all_old/")
+        this.app.apiConnectors.maintenance.getAllOldDocs()
             .then(({json}: any) => {
                 const docs = window.JSON.parse(json.docs)
                 if (docs.length) {
@@ -73,7 +75,7 @@ export class DocMaintenance {
         const docVersion = Number.parseFloat(doc.fields.doc_version)
         let p: Promise<any>
         if (docVersion < 2) {
-            p = postJson("/api/document/admin/get_user_biblist/", {
+            p = this.app.apiConnectors.maintenance.getUserBibList({
                 user_id: doc.fields.owner
             }).then(({json}: any) => {
                 return json.bibList.reduce((db: any, item: any) => {
@@ -96,7 +98,7 @@ export class DocMaintenance {
     }
 
     saveDoc(doc: any): Promise<void> {
-        const p1 = post("/api/document/admin/save_doc/", {
+        const p1 = this.app.apiConnectors.maintenance.saveDoc({
             id: doc.id,
             content: doc.content,
             bibliography: doc.bibliography,
@@ -106,7 +108,7 @@ export class DocMaintenance {
         })
         const promises = [p1]
         if (doc.imageIds) {
-            const p2 = post("/api/document/admin/add_images_to_doc/", {
+            const p2 = this.app.apiConnectors.maintenance.addImagesToDoc({
                 doc_id: doc.id,
                 ids: doc.imageIds
             })
@@ -119,7 +121,7 @@ export class DocMaintenance {
 
     updateDocumentTemplates(): void {
         addAlert("info", gettext("Updating document templates."))
-        postJson("/api/document/admin/get_all_template_ids/").then(({json}: any) => {
+        this.app.apiConnectors.maintenance.getAllTemplateIds().then(({json}: any) => {
             const count = json.template_ids.length
             if (count) {
                 json.template_ids.forEach((templateId: number) =>
@@ -133,7 +135,7 @@ export class DocMaintenance {
     }
 
     updateDocumentTemplate(id: number): void {
-        postJson("/api/document/admin/get_template/base/", {id}).then(
+        this.app.apiConnectors.maintenance.getTemplateBase({id}).then(
             ({json}: any) => {
                 const oldDoc = {
                     content: json.content,
@@ -153,7 +155,7 @@ export class DocMaintenance {
 
     saveDocumentTemplate(doc: any): void {
         this.docTemplatesSavesLeft++
-        post("/api/document/admin/save_template/", {
+        this.app.apiConnectors.maintenance.saveTemplate({
             id: doc.id,
             content: doc.content
         }).then(() => {
@@ -171,7 +173,7 @@ export class DocMaintenance {
 
     updateRevisions(): void {
         addAlert("info", gettext("Updating saved revisions."))
-        postJson("/api/document/admin/get_all_revision_ids/").then(({json}: any) => {
+        this.app.apiConnectors.maintenance.getAllRevisionIds().then(({json}: any) => {
             this.revSavesLeft = json.revision_ids.length
             if (this.revSavesLeft) {
                 json.revision_ids.forEach((revId: number) => this.updateRevision(revId))
@@ -183,7 +185,7 @@ export class DocMaintenance {
     }
 
     updateRevision(id: number): void {
-        get(`/api/document/get_revision/${id}/`)
+        this.app.apiConnectors.maintenance.getRevision(id)
             .then((response: Response) => response.blob())
             .then((blob: Blob) => {
                 const zipfs = new JSZip()
@@ -228,16 +230,7 @@ export class DocMaintenance {
         zipfs
             .generateAsync({type: "blob", mimeType: "application/fidus+zip"})
             .then((blob: Blob) => {
-                post(
-                    "/api/document/admin/update_revision/",
-                    {id},
-                    {
-                        file: {
-                            file: blob,
-                            filename: "some_file.fidus"
-                        }
-                    }
-                ).then(() => {
+                this.app.apiConnectors.maintenance.updateRevision(id, blob).then(() => {
                     addAlert(
                         "success",
                         gettext("The document revision has been updated: ") + id

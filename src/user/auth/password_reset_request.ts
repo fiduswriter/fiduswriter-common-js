@@ -1,4 +1,4 @@
-import {escapeText, post} from "fwtoolkit"
+import {escapeText} from "fwtoolkit"
 import {PreloginPage} from "../../prelogin/index.js"
 
 export class PasswordResetRequest extends PreloginPage {
@@ -66,7 +66,7 @@ export class PasswordResetRequest extends PreloginPage {
                     return
                 }
 
-                post("/api/user/password/reset/", {email})
+                ;(this.app as any).apiConnectors.auth.passwordReset({email})
                     .then(() => {
                         if (document.body !== this.dom) {
                             return

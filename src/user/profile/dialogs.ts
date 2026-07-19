@@ -1,4 +1,4 @@
-import {Dialog, activateWait, addAlert, deactivateWait, escapeText, post, postJson} from "fwtoolkit"
+import {Dialog, activateWait, addAlert, deactivateWait, escapeText} from "fwtoolkit"
 import {
     changeAvatarDialogTemplate,
     changeEmailDialogTemplate,
@@ -20,18 +20,14 @@ export const changeAvatarDialog = (app: any): void => {
 
                 activateWait()
 
-                const file = avatarUploader.files[0]
+                const file: File = avatarUploader.files![0]
 
-                post(
-                    "/api/user/avatar/upload/",
-                    {},
-                    {
-                        avatar: {
-                            file,
-                            filename: file.name
-                        }
+                ;(app as any).apiConnectors.userProfile.avatarUpload({
+                    avatar: {
+                        file,
+                        filename: file.name
                     }
-                )
+                } as Record<string, unknown>)
                     .then(() => deactivateWait())
                     .then(() => app.getConfiguration())
                     .then(() => app.selectPage())
@@ -77,7 +73,7 @@ export const changeAvatarDialog = (app: any): void => {
 const deleteAvatar = (app: any): void => {
     activateWait()
 
-    post("/api/user/avatar/delete/")
+    ;(app as any).apiConnectors.userProfile.avatarDelete()
         .then(() => deactivateWait())
         .then(() => app.getConfiguration())
         .then(() => app.selectPage())
@@ -109,7 +105,7 @@ export const deleteAvatarDialog = (app: any): void => {
     dialog.open()
 }
 
-export const changePwdDialog = ({username}: {username: string}): void => {
+export const changePwdDialog = ({username, app}: {username: string; app?: any}): void => {
     const buttons = [
         {
             text: gettext("Submit"),
@@ -134,7 +130,7 @@ export const changePwdDialog = ({username}: {username: string}): void => {
 
                 activateWait()
 
-                postJson("/api/user/passwordchange/", {
+                ;(app as any).apiConnectors.userProfile.passwordChange({
                     old_password: oldPwd,
                     new_password1: newPwd1,
                     new_password2: newPwd2
@@ -194,7 +190,7 @@ export const addEmailDialog = (app: any): void => {
 
                 ;(document.getElementById("new-profile-email") as HTMLInputElement).value = email
 
-                postJson("/api/user/email/add/", {email})
+                ;(app as any).apiConnectors.userProfile.emailAdd({email})
                     .then(({json, status}: any) => {
                         deactivateWait()
                         if (200 === status) {
@@ -241,7 +237,7 @@ export const deleteEmailDialog = (target: HTMLElement, app: any): void => {
             click: () => {
                 activateWait()
 
-                post("/api/user/email/delete/", {email})
+                ;(app as any).apiConnectors.userProfile.emailDelete({email})
                     .then(() => {
                         dialog.close()
                         deactivateWait()
@@ -283,7 +279,7 @@ export const deleteSocialaccountDialog = (target: HTMLElement, app: any): void =
             click: () => {
                 activateWait()
 
-                post("/api/user/socialaccountdelete/", {socialaccount})
+                ;(app as any).apiConnectors.userProfile.deleteSocialAccount({socialaccount})
                     .then(() => {
                         dialog.close()
                         deactivateWait()
@@ -329,7 +325,7 @@ export const changePrimaryEmailDialog = (app: any): void => {
             click: () => {
                 activateWait()
 
-                post("/api/user/email/primary/", {email})
+                ;(app as any).apiConnectors.userProfile.emailPrimary({email})
                     .then(() => {
                         dialog.close()
                         deactivateWait()

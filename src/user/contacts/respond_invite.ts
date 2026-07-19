@@ -1,21 +1,24 @@
-import {Dialog, escapeText, postJson} from "fwtoolkit"
+import {Dialog, escapeText} from "fwtoolkit"
 
 export class RespondInviteDialog {
     invites: Array<Record<string, unknown>>
     addCallback: (contacts: Array<Record<string, unknown>>) => void
     deleteCallback: (invites: Array<Record<string, unknown>>) => void
     doneCallback: () => void
+    app: any
 
     constructor(
         invites: Array<Record<string, unknown>>,
         addCallback: (contacts: Array<Record<string, unknown>>) => void = () => {},
         deleteCallback: (invites: Array<Record<string, unknown>>) => void = () => {},
-        doneCallback: () => void = () => {}
+        doneCallback: () => void = () => {},
+        app?: any
     ) {
         this.invites = invites
         this.addCallback = addCallback
         this.deleteCallback = deleteCallback
         this.doneCallback = doneCallback
+        this.app = app
     }
 
     init(): void {
@@ -27,7 +30,7 @@ export class RespondInviteDialog {
                         : gettext("Accept invite"),
                 classes: "fw-dark",
                 click: () => {
-                    postJson("/api/user/invites/accept/", {
+                    this.app.apiConnectors.contacts.accept({
                         invites: this.invites
                     }).then(({json, status}: any) => {
                         dialog.close()
@@ -46,7 +49,7 @@ export class RespondInviteDialog {
                         : gettext("Decline invite"),
                 classes: "fw-dark",
                 click: () => {
-                    postJson("/api/user/invites/decline/", {
+                    this.app.apiConnectors.contacts.decline({
                         invites: this.invites
                     }).then(({status}: any) => {
                         dialog.close()

@@ -1,8 +1,9 @@
 import {extractTemplate} from "@fiduswriter/document-template-editor"
 import {NativeImporter as GenericNativeImporter} from "@fiduswriter/document/importer/native"
-import {addAlert, postJson, shortFileTitle} from "fwtoolkit"
+import {addAlert, shortFileTitle} from "fwtoolkit"
 import {E2EEEncryptor} from "fwtoolkit/e2ee/encryptor"
 import {E2EEKeyManager} from "fwtoolkit/e2ee/key-manager"
+import type {ApiConnectors} from "../../../api/index.js"
 
 interface E2EEOptions {
     enabled: boolean
@@ -30,7 +31,8 @@ interface ImageTranslationTable {
 
 export function createNativeImporterBackend(
     _user: Record<string, unknown>,
-    _e2eeOptions: E2EEOptions | null
+    _e2eeOptions: E2EEOptions | null,
+    apiConnectors: ApiConnectors
 ): {
     createDoc: (
         template: any,
@@ -72,8 +74,8 @@ export function createNativeImporterBackend(
                     jsonData.e2ee_iterations = e2ee.iterations
                 }
             }
-            return postJson("/api/document/import/create/", jsonData, files as any)
-                .then(({json}: any) => ({
+            return apiConnectors.documentImport.createDoc(jsonData, files as any)
+                .then((json: any) => ({
                     id: json.id,
                     path: json.path,
                     e2ee: json.e2ee,
@@ -86,9 +88,6 @@ export function createNativeImporterBackend(
         },
         saveImages: async (images, docId, e2ee) => {
             const isE2EE = e2ee?.enabled
-            const endpoint = isE2EE
-                ? "/api/document/e2ee_image/"
-                : "/api/document/import/image/"
             const ImageTranslationTable: ImageTranslationTable = {}
             await Promise.all(
                 Object.values(images.db as Record<string, any>).map(async (imageEntry: any) => {
@@ -112,8 +111,10 @@ export function createNativeImporterBackend(
                             filename: imageEntry.image.split("/").pop()
                         }
                     }
-                    const {json}: any = await postJson(endpoint, jsonData, files as any)
-                    ImageTranslationTable[imageEntry.id] = json.id
+                    const result: any = isE2EE
+                        ? await apiConnectors.documentImport.saveE2EEImage(jsonData, files as any)
+                        : await apiConnectors.documentImport.saveImage(jsonData, files as any)
+                    ImageTranslationTable[imageEntry.id] = result.id
                 })
             )
             return ImageTranslationTable
@@ -137,8 +138,8 @@ export function createNativeImporterBackend(
                     e2ee.key
                 )
             }
-            return postJson("/api/document/import/", saveData)
-                .then(({json}: any) => ({added: json.added, updated: json.updated}))
+            return apiConnectors.documentImport.saveDocument(saveData)
+                .then((json: any) => ({added: json.added, updated: json.updated}))
                 .catch((error: Error) => {
                     addAlert(
                         "error",
@@ -168,7 +169,8 @@ export class NativeImporter extends GenericNativeImporter {
         importId: string | null = null,
         requestedPath = "",
         template: any = null,
-        e2eeOptions: E2EEOptions | null = null
+        e2eeOptions: E2EEOptions | null = null,
+        apiConnectors: ApiConnectors
     ) {
         super(
             doc,
@@ -176,7 +178,7 @@ export class NativeImporter extends GenericNativeImporter {
             images,
             otherFiles,
             user as any,
-            createNativeImporterBackend(user, e2eeOptions) as any,
+            createNativeImporterBackend(user, e2eeOptions, apiConnectors) as any,
             {
                 importId,
                 requestedPath,

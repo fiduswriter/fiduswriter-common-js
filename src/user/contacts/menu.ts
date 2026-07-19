@@ -9,7 +9,7 @@ export const bulkMenuModel = (): {content: Array<Record<string, unknown>>} => ({
             action: (overview: any) => {
                 const selected = overview.getSelected()
                 if (selected.length) {
-                    const dialog = new DeleteContactDialog(selected)
+                    const dialog = new DeleteContactDialog(selected, overview.app)
                     dialog.init().then(() => {
                         overview.contacts = overview.contacts.filter(
                             (ocontact: any) =>
@@ -37,7 +37,7 @@ export const menuModel = (): {content: Array<Record<string, unknown>>} => ({
             title: gettext("Invite contact"),
             keys: "Alt-i",
             action: (overview: any) => {
-                const dialog = new AddContactDialog(overview.app.settings)
+                const dialog = new AddContactDialog(overview.app.settings, overview.app)
                 dialog.init().then((contacts: any) => {
                     contacts.forEach((contact: any) => overview.contacts.push(contact))
                     overview.initializeView()

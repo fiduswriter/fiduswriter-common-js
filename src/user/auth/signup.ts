@@ -1,4 +1,4 @@
-import {escapeText, postJson} from "fwtoolkit"
+import {escapeText} from "fwtoolkit"
 import {PreloginPage} from "../../prelogin/index.js"
 
 export class Signup extends PreloginPage {
@@ -129,7 +129,7 @@ export class Signup extends PreloginPage {
             if ((this.app as any).inviteKey) {
                 sendData["invite_key"] = (this.app as any).inviteKey
             }
-            postJson("/api/user/signup/", sendData)
+            (this.app as any).apiConnectors.auth.signup(sendData)
                 .then(({json}: any) => {
                     if (json.location === "/api/account/confirm-email/") {
                         fwContents.innerHTML = `<div class="fw-login-left">

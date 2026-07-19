@@ -2,17 +2,16 @@ import {
     Dialog,
     activateWait,
     addAlert,
-    deactivateWait,
-    postJson
+    deactivateWait
 } from "fwtoolkit"
 import QRCode from "qrcode"
 
-export const twoFactorSetupDialog = (): Promise<any> => {
+export const twoFactorSetupDialog = (app: any): Promise<any> => {
     let secretKey: string | null = null
     let deviceId: string | null = null
 
     activateWait()
-    return postJson("/api/user/two-factor/setup/").then(({json}: any): any => {
+    return app.apiConnectors.auth.twoFactorSetup().then(({json}: any): any => {
         deactivateWait()
 
         if (json.status !== "success") {
@@ -62,7 +61,7 @@ export const twoFactorSetupDialog = (): Promise<any> => {
                         return
                     }
 
-                    postJson("/api/user/two-factor/verify/", {
+                    app.apiConnectors.auth.twoFactorVerify({
                         code,
                         device_id: deviceId
                     })
@@ -120,14 +119,14 @@ export const twoFactorSetupDialog = (): Promise<any> => {
     })
 }
 
-export const twoFactorDisableDialog = (): any => {
+export const twoFactorDisableDialog = (app: any): any => {
     const buttons = [
         {
             text: gettext("Disable 2FA"),
             classes: "fw-orange",
             click: () => {
                 activateWait()
-                postJson("/api/user/two-factor/disable/", {})
+                app.apiConnectors.auth.twoFactorDisable()
                     .then(({json}: any) => {
                         if (json.status === "success") {
                             addAlert("success", json.message)
@@ -167,12 +166,14 @@ export const twoFactorLoginDialog = ({
     login,
     password,
     remember,
-    loginPage
+    loginPage,
+    app
 }: {
     login: string
     password: string
     remember: boolean
     loginPage: any
+    app: any
 }): any => {
     const buttons = [
         {
@@ -190,7 +191,7 @@ export const twoFactorLoginDialog = ({
                 }
 
                 activateWait()
-                postJson("/api/user/login/", {
+                app.apiConnectors.auth.twoFactorLogin({
                     login,
                     password,
                     remember,
@@ -232,8 +233,8 @@ export const twoFactorLoginDialog = ({
     return dialog
 }
 
-export const checkTwoFactorStatus = (): Promise<boolean> => {
-    return postJson("/api/user/two-factor/status/")
+export const checkTwoFactorStatus = (app: any): Promise<boolean> => {
+    return app.apiConnectors.auth.twoFactorStatus()
         .then(({json}: any) => {
             if (json.status === "success") {
                 return json.enabled

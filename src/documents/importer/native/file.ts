@@ -4,6 +4,7 @@ import {
     FidusFileImporter as GenericFidusFileImporter
 } from "@fiduswriter/document/importer/native"
 import {createNativeImporterBackend} from "./import.js"
+import type {ApiConnectors} from "../../../api/index.js"
 
 export const MIN_FW_DOCUMENT_VERSION = GENERIC_MIN_FW_DOCUMENT_VERSION
 export const MAX_FW_DOCUMENT_VERSION = GENERIC_MAX_FW_DOCUMENT_VERSION
@@ -15,9 +16,10 @@ export class FidusFileImporter extends GenericFidusFileImporter {
         path = "",
         check = false,
         contacts: Array<Record<string, unknown>> = [],
-        e2eeOptions: any = null
+        e2eeOptions: any = null,
+        apiConnectors: ApiConnectors
     ) {
-        super(file, user as any, path, createNativeImporterBackend(user, e2eeOptions) as any, {
+        super(file, user as any, path, createNativeImporterBackend(user, e2eeOptions, apiConnectors) as any, {
             check,
             contacts,
             e2eeOptions,

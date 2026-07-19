@@ -9,7 +9,6 @@ import {
     deactivateWait,
     escapeText,
     longFilePath,
-    postJson,
     shortFileTitle
 } from "fwtoolkit"
 import {E2EEKeyManager} from "fwtoolkit/e2ee/key-manager"
@@ -125,7 +124,7 @@ export class DocumentOverviewActions {
             return Promise.resolve()
         }
         const displayTitle = getDisplayTitle(doc)
-        return postJson("/api/document/delete/", {id}).then(({json}) => {
+        return (this.documentOverview.app as any).apiConnectors.documentList.deleteDocument({id}).then((json: any) => {
             if ((json as any).done) {
                 addAlert(
                     "success",
@@ -300,7 +299,8 @@ export class DocumentOverviewActions {
                                     this.documentOverview.path,
                                     true,
                                     this.documentOverview.contacts,
-                                    e2eeOptions
+                                    e2eeOptions,
+                                    (this.documentOverview.app as any).apiConnectors
                                 )
 
                                 try {
@@ -374,7 +374,8 @@ export class DocumentOverviewActions {
                             const options: any = {
                                 bibDB: this.documentOverview.app.bibDB,
                                 files: {},
-                                e2eeOptions
+                                e2eeOptions,
+                                apiConnectors: (this.documentOverview.app as any).apiConnectors
                             }
 
                             const importer = new importerInfo.importer(
@@ -539,7 +540,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any // using original postJson-based version for now
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() => {
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(
@@ -571,7 +572,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() => {
                 const docs = ids.map(id =>
                     this.documentOverview.documentList.find(entry => entry.id === id)
@@ -726,7 +727,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -743,7 +744,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -760,7 +761,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -795,7 +796,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() => {
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -841,7 +842,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -870,7 +871,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -901,7 +902,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -932,7 +933,7 @@ export class DocumentOverviewActions {
                 ids,
                 this.documentOverview.documentList as any,
                 this.documentOverview.schema,
-                null as any
+                (this.documentOverview.app as any).apiConnectors.documentList
             ).then(() =>
                 ids.forEach(id => {
                     const doc = this.documentOverview.documentList.find(entry => entry.id === id)
@@ -1008,7 +1009,8 @@ export class DocumentOverviewActions {
             const revDialog = new DocumentRevisionsDialog(
                 documentId,
                 this.documentOverview.documentList,
-                this.documentOverview.user
+                this.documentOverview.user,
+                (this.documentOverview.app as any).apiConnectors
             )
             revDialog.init().then((actionObject: any) => {
                 switch (actionObject.action) {

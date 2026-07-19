@@ -10,7 +10,6 @@ import {
     avatarTemplate,
     escapeText,
     findTarget,
-    postJson,
     setDocTitle,
     whenReady
 } from "fwtoolkit"
@@ -169,7 +168,7 @@ export class ContactsOverview {
         if (this.app.isOffline()) {
             return cachedPromise.then(() => {})
         }
-        return postJson("/api/user/contacts/list/")
+        return (this.app as any).apiConnectors.contacts.list()
             .then(({json}: any) => {
                 return cachedPromise.then(oldJson => {
                     if (!deepEqual(json, oldJson)) {
@@ -257,7 +256,8 @@ export class ContactsOverview {
                                             invite.id === contact.id
                                     )
                             )),
-                        () => this.initializeView()
+                        () => this.initializeView(),
+                        this.app
                     )
                     dialog.init()
                     break
@@ -278,7 +278,7 @@ export class ContactsOverview {
     }
 
     deleteContact(id: number, type: string): void {
-        const dialog = new DeleteContactDialog([{id, type}])
+        const dialog = new DeleteContactDialog([{id, type}], this.app)
         dialog.init().then(() => {
             this.contacts = this.contacts.filter(
                 ocontact => ocontact.id !== id || ocontact.type !== type

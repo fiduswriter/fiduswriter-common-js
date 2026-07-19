@@ -2,8 +2,6 @@ import {
     activateWait,
     addAlert,
     deactivateWait,
-    post,
-    postJson,
     whenReady
 } from "fwtoolkit"
 import {PreloginPage} from "../../prelogin/index.js"
@@ -45,7 +43,7 @@ export class EmailConfirm extends PreloginPage {
         this.formChecks = []
         this.confirmQuestionsTemplates = []
         this.confirmMethods = [
-            () => post(`/api/user/confirm-email/${this.key}/`)
+            () => (this.app as any).apiConnectors.userProfile.confirmEmail(this.key)
         ]
         this.firstVerification = false
     }
@@ -59,7 +57,7 @@ export class EmailConfirm extends PreloginPage {
     }
 
     getConfirmData(): Promise<void> {
-        return postJson("/api/user/get_confirmkey_data/", {key: this.key})
+        return (this.app as any).apiConnectors.userProfile.getConfirmKeyData({key: this.key})
             .then(({json}: any) => {
                 this.username = json.username
                 this.email = json.email

@@ -1,10 +1,12 @@
-import {Dialog, postJson} from "fwtoolkit"
+import {Dialog} from "fwtoolkit"
 
 export class DeleteContactDialog {
     contacts: Array<Record<string, unknown>>
+    app: any
 
-    constructor(contacts: Array<Record<string, unknown>>) {
+    constructor(contacts: Array<Record<string, unknown>>, app?: any) {
         this.contacts = contacts
+        this.app = app
     }
 
     init(): Promise<void> {
@@ -14,7 +16,7 @@ export class DeleteContactDialog {
                     text: gettext("Delete"),
                     classes: "fw-dark",
                     click: () => {
-                        postJson("/api/user/contacts/delete/", {
+                        this.app.apiConnectors.contacts.delete({
                             contacts: this.contacts
                         }).then(({status}: any) => {
                             dialog.close()

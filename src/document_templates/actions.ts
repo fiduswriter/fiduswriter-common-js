@@ -2,7 +2,7 @@ import {
     DocumentTemplateExporter,
     DocumentTemplateImporter
 } from "@fiduswriter/document-template-editor"
-import {Dialog, activateWait, addAlert, deactivateWait, postJson} from "fwtoolkit"
+import {Dialog, activateWait, addAlert, deactivateWait} from "fwtoolkit"
 
 import {importFidusTemplateTemplate} from "./templates.js"
 import type {DocTemplatesOverview} from "./overview.js"
@@ -23,7 +23,7 @@ export class DocTemplatesActions {
             return
         }
 
-        postJson("/api/user_template_manager/delete/", {id})
+        ;(this.docTemplatesOverview.app as any).apiConnectors.documentTemplate.delete({id})
             .catch((error: Error) => {
                 addAlert(
                     "error",
@@ -31,7 +31,7 @@ export class DocTemplatesActions {
                 )
                 throw error
             })
-            .then(({json}: any) => {
+            .then((json: any) => {
                 if (json.done) {
                     addAlert(
                         "success",
@@ -73,7 +73,7 @@ export class DocTemplatesActions {
     }
 
     copyDocTemplate(oldDocTemplate: Record<string, unknown>): void {
-        postJson("/api/user_template_manager/copy/", {
+        ;(this.docTemplatesOverview.app as any).apiConnectors.documentTemplate.copy({
             id: oldDocTemplate.id,
             title: `${gettext("Copy of")} ${oldDocTemplate.title}`
         })
@@ -81,7 +81,7 @@ export class DocTemplatesActions {
                 addAlert("error", gettext("The document template could not be copied"))
                 throw error
             })
-            .then(({json}: any) => {
+            .then((json: any) => {
                 const docTemplate: any = JSON.parse(JSON.stringify(oldDocTemplate))
                 docTemplate.is_owner = true
                 docTemplate.id = json["id"]
