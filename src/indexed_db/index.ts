@@ -1,5 +1,5 @@
 // Changing this number will make clients flush their database.
-const DB_VERSION = 4
+const DB_VERSION = 5
 
 interface DbTableProperties {
     keyPath?: string
@@ -62,19 +62,40 @@ export class IndexedDB {
         }
     }
 
-    updateData(objectStoreName: string, data: Record<string, unknown>): void {
+    updateData(
+        objectStoreName: string,
+        data: Record<string, unknown>,
+        retry: boolean = true
+    ): void {
         const request = window.indexedDB.open(this.dbName, DB_VERSION)
         request.onerror = (event: Event) => {
-            this.reset(event).then(() => this.updateData(objectStoreName, data))
+            this.reset(event).then(() => this.updateData(objectStoreName, data, false))
         }
 
         request.onsuccess = (event: Event) => {
             const db = (event.target as IDBOpenDBRequest).result
-            const objectStore = db
-                .transaction(objectStoreName, "readwrite")
-                .objectStore(objectStoreName)
-            for (const d in data) {
-                objectStore.put(d)
+            try {
+                const objectStore = db
+                    .transaction(objectStoreName, "readwrite")
+                    .objectStore(objectStoreName)
+                for (const d in data) {
+                    objectStore.put(d)
+                }
+            } catch (error) {
+                // Before resetting IndexedDB make sure to close connections to
+                // avoid blocking the delete IndexedDB process
+                db.close()
+                if (
+                    retry &&
+                    error instanceof DOMException &&
+                    error.name === "NotFoundError"
+                ) {
+                    this.reset().then(() =>
+                        this.updateData(objectStoreName, data, false)
+                    )
+                } else {
+                    throw error
+                }
             }
         }
 

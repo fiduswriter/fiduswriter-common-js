@@ -342,6 +342,11 @@ export class App {
                     }
                     const overview = new DocTemplatesOverview(this.config as any)
                     return Promise.resolve(overview)
+                },
+                dbTables: {
+                    list: {
+                        keyPath: "id"
+                    }
                 }
             }
         }
