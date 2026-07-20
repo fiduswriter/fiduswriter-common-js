@@ -1,4 +1,4 @@
-import {ensureCSS, post} from "fwtoolkit"
+import {ensureCSS} from "fwtoolkit"
 
 // Creates the feedback tab. The tab is meant for user feedback to the developers while FW is still in
 // a somewhat early stage. It is included in a way so it's easy to remove from all the templates.
@@ -6,9 +6,11 @@ import {ensureCSS, post} from "fwtoolkit"
 
 export class FeedbackTab {
     previousActiveElement: HTMLElement | null
+    app: any
 
-    constructor() {
+    constructor(app?: any) {
         this.previousActiveElement = null
+        this.app = app
     }
 
     init(): void {
@@ -114,13 +116,14 @@ export class FeedbackTab {
         closeFeedbackEl.style.display = "none"
         feedbackFormEl.style.visibility = "hidden"
 
-        post("/api/feedback/feedback/", {message: messageEl.value})
+        ;(this.app as any).apiConnectors.feedback
+            .send({message: messageEl.value})
             .then(() => {
                 messageEl.value = ""
                 closeFeedbackEl.style.display = "block"
                 responseEl.style.display = "block"
             })
-            .catch(_error => {
+            .catch((_error: Error) => {
                 messageEl.value = ""
                 closeFeedbackEl.style.display = "block"
             })

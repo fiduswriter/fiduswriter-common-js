@@ -1,10 +1,10 @@
-import {escapeText, get, post} from "fwtoolkit"
+import {escapeText} from "fwtoolkit"
 import {PreloginPage} from "../../prelogin/index.js"
 
 export class PasswordResetChangePassword extends PreloginPage {
-    key: string | false
+    key: string
 
-    constructor({app, language}: {app: any; language: string}, key: string | false = false) {
+    constructor({app, language}: {app: any; language: string}, key: string) {
         super({app, language})
         this.title = gettext("Change Password")
         this.key = key
@@ -76,10 +76,14 @@ export class PasswordResetChangePassword extends PreloginPage {
                 if (errors) {
                     return
                 }
-                get(`/api/account/password/reset/key/${this.key}/`)
-                    .then((response: any) => {
-                        return post(response.url, {password1, password2})
-                    })
+                ;(this.app as any).apiConnectors.auth
+                    .passwordResetKeyGet(this.key)
+                    .then(({url}: {url: string}) =>
+                        (this.app as any).apiConnectors.auth.passwordResetKeyPost(
+                            url,
+                            {password1, password2}
+                        )
+                    )
                     .then(() => {
                         if (document.body !== this.dom) {
                             return

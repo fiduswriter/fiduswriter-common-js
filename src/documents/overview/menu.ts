@@ -47,10 +47,15 @@ export const bulkMenuModel = (): MenuModel => ({
                                 : gettext("Move document"),
                         movingFiles: docs,
                         allFiles: overview.documentList,
-                        moveUrl: "/api/document/move/",
+                        moveFunction: (id: number, _title: string, path: string) =>
+                            (overview.app as any).apiConnectors.documentList.moveDocument({
+                                id,
+                                path
+                            }),
                         successMessage: gettext("Document has been moved"),
                         errorMessage: gettext("Could not move document"),
-                        succcessCallback: (_file: Record<string, unknown>, _path: string) => {
+                        succcessCallback: (file: Record<string, unknown>, path: string) => {
+                            file.path = path
                             overview.initTable()
                         }
                     } as any)

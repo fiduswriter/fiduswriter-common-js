@@ -50,6 +50,7 @@ export interface App {
     goTo: (url: string) => void
     settings: Settings
     menuPlugins?: MenuPlugins
+    apiConnectors?: Record<string, any>
     name?: string
 }
 

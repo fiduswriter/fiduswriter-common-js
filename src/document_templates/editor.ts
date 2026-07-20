@@ -110,7 +110,7 @@ export class DocTemplatesEditor {
         </div>`
         document.body = this.dom
         setDocTitle(gettext("Template Editor"), this.app as any)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 

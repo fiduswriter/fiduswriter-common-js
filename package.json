@@ -190,7 +190,7 @@
     "@fiduswriter/image-manager": "^0.1.13",
     "@fiduswriter/editor": "^0.1.47",
     "downloadjs": "^1.4.7",
-    "fwtoolkit": "^0.1.4",
+    "fwtoolkit": "^0.2.0",
     "jszip": "^3.10.1",
     "prosemirror-history": "^1.3.2",
     "prosemirror-keymap": "^1.2.2",

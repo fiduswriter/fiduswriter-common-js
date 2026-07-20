@@ -53,7 +53,8 @@ export class Profile {
                 changePwdDialog({username: this.user.username, app: this.app}),
             "#delete-account": (_el, _event) => {
                 const dialog = new DeleteUserDialog(
-                    (this.dom.querySelector("#delete-account") as HTMLElement).dataset.username!
+                    (this.dom.querySelector("#delete-account") as HTMLElement).dataset.username!,
+                    this.app
                 )
                 dialog.init()
             },
@@ -175,7 +176,7 @@ export class Profile {
         ])
 
         setDocTitle(gettext("Configure profile"), this.app)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 

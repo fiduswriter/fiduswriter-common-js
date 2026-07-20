@@ -78,7 +78,7 @@ export class DocTemplatesOverview {
             staticUrl("css/access_rights_dialog.css")
         ])
         setDocTitle(gettext("Document Templates Overview"), this.app as any)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 

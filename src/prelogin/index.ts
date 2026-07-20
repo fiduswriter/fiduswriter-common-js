@@ -169,7 +169,7 @@ export class PreloginPage {
         document.body = this.dom
         ensureCSS([staticUrl("css/prelogin.css")])
         setDocTitle(this.title, this.app)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 }

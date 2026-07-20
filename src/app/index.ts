@@ -7,7 +7,6 @@ import {
     addAlert,
     ensureCSS,
     findTarget,
-    getJson,
     showSystemMessage
 } from "fwtoolkit"
 import {getSettings, initSettings} from "fwtoolkit/settings"
@@ -186,7 +185,7 @@ export class App {
                         app: this.config as any
                     })
                     new SiteMenu(this.config as any, "bibliography").init()
-                    new FeedbackTab().init()
+                    new FeedbackTab(this.config as any).init()
                     const container = dom.querySelector(
                         ".fw-contents"
                     ) as HTMLElement
@@ -320,7 +319,7 @@ export class App {
                         app: this.config as any
                     })
                     new SiteMenu(this.config as any, "images").init()
-                    new FeedbackTab().init()
+                    new FeedbackTab(this.config as any).init()
                     const container = dom.querySelector(
                         ".fw-contents"
                     ) as HTMLElement
@@ -620,7 +619,8 @@ export class App {
     }
 
     getConfiguration(): Promise<void> {
-        return (getJson as any)("/api/base/configuration/")
+        return this.apiConnectors.config
+            .getConfiguration()
             .then((json: Record<string, any>) =>
                 Object.entries(json).forEach(
                     ([key, value]) => (this.config[key] = value)

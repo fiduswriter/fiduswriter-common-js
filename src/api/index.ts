@@ -15,7 +15,7 @@ export interface DocumentListApi {
     getDocumentList(): Promise<Record<string, unknown>>
     getDocumentListExtra(ids: number[]): Promise<Record<string, unknown>>
     deleteDocument(data: {id?: number; ids?: number[]}): Promise<Record<string, unknown>>
-    moveDocument(data: {ids: number[]; parent?: number; parent_id?: number}): Promise<Record<string, unknown>>
+    moveDocument(data: {id: number; path: string}): Promise<Record<string, unknown>>
     getEncryptionKeys(): Promise<Record<string, unknown>>
 }
 
@@ -61,6 +61,7 @@ export interface AuthApi {
     passwordReset(data: {email: string}): Promise<unknown>
     passwordResetKeyGet(key: string): Promise<{url: string}>
     passwordResetKeyPost(url: string, data: Record<string, unknown>): Promise<unknown>
+    logout(): Promise<unknown>
     twoFactorSetup(): Promise<{json: Record<string, unknown>}>
     twoFactorVerify(data: Record<string, unknown>): Promise<{json: Record<string, unknown>}>
     twoFactorLogin(data: Record<string, unknown>): Promise<{json: Record<string, unknown>}>
@@ -109,6 +110,12 @@ export interface ErrorHookApi {
     send(data: Record<string, unknown>): Promise<unknown>
 }
 
+// ---- FeedbackApi ----
+
+export interface FeedbackApi {
+    send(data: {message: string}): Promise<unknown>
+}
+
 // ---- MaintenanceApi ----
 
 export interface MaintenanceApi {
@@ -143,6 +150,7 @@ export interface ApiConnectors {
     flatPage: FlatPageApi
     systemMessage: SystemMessageApi
     errorHook: ErrorHookApi
+    feedback: FeedbackApi
     config: ConfigApi
     maintenance: MaintenanceApi
     revision: RevisionApi

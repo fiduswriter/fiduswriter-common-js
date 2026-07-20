@@ -1,12 +1,14 @@
-import {Dialog, activateWait, addAlert, deactivateWait, postBare} from "fwtoolkit"
+import {Dialog, activateWait, addAlert, deactivateWait} from "fwtoolkit"
 import {deleteUserDialogTemplate} from "./templates.js"
 
 export class DeleteUserDialog {
     username: string
+    app: any
     dialog: any
 
-    constructor(username: string) {
+    constructor(username: string, app: any) {
         this.username = username
+        this.app = app
     }
 
     init(): void {
@@ -45,8 +47,10 @@ export class DeleteUserDialog {
     deleteCurrentUser(password: string): void {
         activateWait()
 
-        postBare("/api/user/delete/", {password}).then((response: Response) => {
-            switch (response.status) {
+        this.app.apiConnectors.userProfile
+            .deleteUser({password})
+            .then((response: Response) => {
+                switch (response.status) {
                 case 200:
                     window.location.href = "/"
                     break

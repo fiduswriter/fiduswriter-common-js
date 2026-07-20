@@ -143,7 +143,7 @@ export class DocumentOverview {
         ])
         document.body = this.dom
         setDocTitle(gettext("Document Overview"), this.app as any)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 

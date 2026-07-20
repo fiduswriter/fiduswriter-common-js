@@ -209,14 +209,14 @@ export class SiteMenu implements SiteMenuLike {
                                 sessionStorage.removeItem(key)
                             }
                         }
-                        import("fwtoolkit/network").then(({post}) =>
-                            post("/api/user/logout/").then(() => {
-                                window.location.href =
-                                    this.app.routes[""].app === "document"
-                                        ? "/"
-                                        : "/documents/"
-                            })
-                        )
+                        ;(this.app.apiConnectors as any).auth
+                            .logout()
+                            .then(() => {
+                            window.location.href =
+                                this.app.routes[""].app === "document"
+                                    ? "/"
+                                    : "/documents/"
+                        })
                         break
                 }
             }

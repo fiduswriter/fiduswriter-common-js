@@ -62,7 +62,7 @@ export class ContactsOverview {
         })
         document.body = this.dom
         setDocTitle(gettext("Contacts"), this.app)
-        const feedbackTab = new FeedbackTab()
+        const feedbackTab = new FeedbackTab(this.app)
         feedbackTab.init()
     }
 
