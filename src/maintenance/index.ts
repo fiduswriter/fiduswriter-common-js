@@ -5,6 +5,13 @@ import {updateDoc} from "@fiduswriter/document/schema/convert"
 import {FW_DOCUMENT_VERSION} from "@fiduswriter/document/schema/index"
 import {addAlert, findTarget, whenReady} from "fwtoolkit"
 
+import type {
+    OldDocsResponse,
+    RevisionIdsResponse,
+    TemplateBaseResponse,
+    TemplateIdsResponse,
+    UserBibListResponse
+} from "../api/index.js"
 import type {FrontendApp} from "../types.js"
 
 export class DocMaintenance {
@@ -42,7 +49,7 @@ export class DocMaintenance {
     getDocBatch(): void {
         this.batch++
         this.app.apiConnectors.maintenance.getAllOldDocs()
-            .then((json: any) => {
+            .then((json: OldDocsResponse) => {
                 const docs = window.JSON.parse(json.docs)
                 if (docs.length) {
                     addAlert("info", `${gettext("Downloaded batch")}: ${this.batch}`)
@@ -79,7 +86,7 @@ export class DocMaintenance {
         if (docVersion < 2) {
             p = this.app.apiConnectors.maintenance.getUserBibList({
                 user_id: doc.fields.owner
-            }).then((json: any) => {
+            }).then((json: UserBibListResponse) => {
                 return json.bibList.reduce((db: any, item: any) => {
                     const id = item["id"]
                     const bibDBEntry: any = {}
@@ -123,7 +130,7 @@ export class DocMaintenance {
 
     updateDocumentTemplates(): void {
         addAlert("info", gettext("Updating document templates."))
-        this.app.apiConnectors.maintenance.getAllTemplateIds().then((json: any) => {
+        this.app.apiConnectors.maintenance.getAllTemplateIds().then((json: TemplateIdsResponse) => {
             const count = json.template_ids.length
             if (count) {
                 json.template_ids.forEach((templateId: number) =>
@@ -138,7 +145,7 @@ export class DocMaintenance {
 
     updateDocumentTemplate(id: number): void {
         this.app.apiConnectors.maintenance.getTemplateBase({id}).then(
-            (json: any) => {
+            (json: TemplateBaseResponse) => {
                 const oldDoc = {
                     content: json.content,
                     diffs: [],
@@ -175,7 +182,7 @@ export class DocMaintenance {
 
     updateRevisions(): void {
         addAlert("info", gettext("Updating saved revisions."))
-        this.app.apiConnectors.maintenance.getAllRevisionIds().then((json: any) => {
+        this.app.apiConnectors.maintenance.getAllRevisionIds().then((json: RevisionIdsResponse) => {
             this.revSavesLeft = json.revision_ids.length
             if (this.revSavesLeft) {
                 json.revision_ids.forEach((revId: number) => this.updateRevision(revId))

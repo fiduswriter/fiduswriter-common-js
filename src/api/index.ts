@@ -55,6 +55,24 @@ export interface UserProfileApi {
 
 // ---- AuthApi ----
 
+export interface TwoFactorSetupResponse {
+    status: string
+    message?: string
+    secret_key: string
+    device_id: string
+    provisioning_uri: string
+}
+
+export interface TwoFactorVerifyResponse {
+    status: string
+    message: string
+}
+
+export interface TwoFactorStatusResponse {
+    status: string
+    enabled: boolean
+}
+
 export interface AuthApi {
     login(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; status: number; requiresEmailConfirmation?: boolean}>
     signup(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; requiresEmailConfirmation?: boolean}>
@@ -62,22 +80,30 @@ export interface AuthApi {
     passwordResetKeyGet(key: string): Promise<{url: string}>
     passwordResetKeyPost(url: string, data: Record<string, unknown>): Promise<unknown>
     logout(): Promise<unknown>
-    twoFactorSetup(): Promise<{json: Record<string, unknown>}>
-    twoFactorVerify(data: Record<string, unknown>): Promise<{json: Record<string, unknown>}>
-    twoFactorLogin(data: Record<string, unknown>): Promise<{json: Record<string, unknown>}>
-    twoFactorDisable(): Promise<{json: Record<string, unknown>}>
-    twoFactorStatus(): Promise<{json: {status: string; enabled: boolean}}>
+    twoFactorSetup(): Promise<TwoFactorSetupResponse>
+    twoFactorVerify(data: Record<string, unknown>): Promise<TwoFactorVerifyResponse>
+    twoFactorLogin(data: Record<string, unknown>): Promise<TwoFactorVerifyResponse>
+    twoFactorDisable(): Promise<TwoFactorVerifyResponse>
+    twoFactorStatus(): Promise<TwoFactorStatusResponse>
 }
 
 // ---- ContactsApi ----
 
+export interface ContactsListResponse extends Record<string, unknown> {
+    contacts: Array<Record<string, unknown>>
+}
+
+export interface ContactsInviteResponse {
+    redirect: string
+}
+
 export interface ContactsApi {
-    list(): Promise<{json: Record<string, unknown>}>
+    list(): Promise<ContactsListResponse>
     delete(data: Record<string, unknown>): Promise<{status: number}>
     add(data: {user_string: string}): Promise<{json: Record<string, unknown>; status: number}>
     accept(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; status: number}>
     decline(data: Record<string, unknown>): Promise<{status: number}>
-    invite(data: {key: string}): Promise<{json: Record<string, unknown>}>
+    invite(data: {key: string}): Promise<ContactsInviteResponse>
 }
 
 // ---- FlatPageApi ----
@@ -107,15 +133,37 @@ export interface FeedbackApi {
 
 // ---- MaintenanceApi ----
 
+export interface OldDocsResponse {
+    docs: string
+}
+
+export interface UserBibListResponse {
+    bibList: Array<Record<string, unknown>>
+}
+
+export interface TemplateIdsResponse {
+    template_ids: number[]
+}
+
+export interface TemplateBaseResponse {
+    content: Record<string, unknown> | Array<Record<string, unknown>>
+    title: string
+    doc_version: string
+}
+
+export interface RevisionIdsResponse {
+    revision_ids: number[]
+}
+
 export interface MaintenanceApi {
-    getAllOldDocs(): Promise<{json: {docs: string}}>
-    getUserBibList(data: {user_id: number}): Promise<{json: {bibList: Array<Record<string, unknown>>}}>
+    getAllOldDocs(): Promise<OldDocsResponse>
+    getUserBibList(data: {user_id: number}): Promise<UserBibListResponse>
     saveDoc(data: Record<string, unknown>): Promise<unknown>
     addImagesToDoc(data: Record<string, unknown>): Promise<unknown>
-    getAllTemplateIds(): Promise<{json: {template_ids: number[]}}>
-    getTemplateBase(data: {id: number}): Promise<{json: Record<string, unknown>}>
+    getAllTemplateIds(): Promise<TemplateIdsResponse>
+    getTemplateBase(data: {id: number}): Promise<TemplateBaseResponse>
     saveTemplate(data: Record<string, unknown>): Promise<unknown>
-    getAllRevisionIds(): Promise<{json: {revision_ids: number[]}}>
+    getAllRevisionIds(): Promise<RevisionIdsResponse>
     getRevision(id: number): Promise<Response>
     updateRevision(id: number, blob: Blob): Promise<unknown>
 }

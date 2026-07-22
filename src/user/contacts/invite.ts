@@ -1,3 +1,4 @@
+import type {ContactsInviteResponse} from "../../api/index.js"
 import type {PreloginApp} from "../../prelogin/index.js"
 
 export class ContactInvite {
@@ -17,7 +18,7 @@ export class ContactInvite {
             return loginPage.init()
         }
 
-        return this.app.apiConnectors.contacts.invite({key: this.key}).then((json: any) => {
+        return this.app.apiConnectors.contacts.invite({key: this.key}).then((json: ContactsInviteResponse) => {
             window.history.replaceState({}, "", json.redirect)
             return this.app.selectPage()
         })

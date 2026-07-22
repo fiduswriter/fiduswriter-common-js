@@ -2,9 +2,15 @@ import {
     Dialog,
     activateWait,
     addAlert,
-    deactivateWait
+    deactivateWait,
+    type DialogButtonSpec
 } from "fwtoolkit"
 import QRCode from "qrcode"
+import type {
+    TwoFactorSetupResponse,
+    TwoFactorStatusResponse,
+    TwoFactorVerifyResponse
+} from "../../api/index.js"
 import type {FrontendApp} from "../../types.js"
 import type {LoginPage} from "./login.js"
 
@@ -13,12 +19,13 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
     let deviceId: string | null = null
 
     activateWait()
-    return app.apiConnectors.auth.twoFactorSetup().then((json: any): any => {
+    return app.apiConnectors.auth.twoFactorSetup().then((json: TwoFactorSetupResponse): any => {
         deactivateWait()
 
         if (json.status !== "success") {
-            addAlert("error", json.message)
-            return Promise.reject(json.message)
+            const message = json.message || gettext("Two-factor setup failed.")
+            addAlert("error", message)
+            return Promise.reject(message)
         }
 
         secretKey = json.secret_key
@@ -48,7 +55,7 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
             }
         )
 
-        const buttons = [
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Verify"),
                 classes: "fw-dark",
@@ -67,7 +74,7 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
                         code,
                         device_id: deviceId
                     })
-                        .then((json: any) => {
+                        .then((json: TwoFactorVerifyResponse) => {
                             if (json.status === "success") {
                                 addAlert("success", json.message)
                                 dialog.close()
@@ -100,7 +107,7 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
             buttons,
             icon: "shield-alt",
             width: 500
-        } as any)
+        })
 
         dialog.open()
 
@@ -114,7 +121,7 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
             ;(codeInput as HTMLElement).addEventListener("keypress", (event: Event) => {
                 if ((event as KeyboardEvent).key === "Enter") {
                     event.preventDefault()
-                    ;(buttons[0] as any).click()
+                    buttons[0].click!()
                 }
             })
         }
@@ -122,14 +129,14 @@ export const twoFactorSetupDialog = (app: FrontendApp): Promise<any> => {
 }
 
 export const twoFactorDisableDialog = (app: FrontendApp): any => {
-    const buttons = [
+    const buttons: DialogButtonSpec[] = [
         {
             text: gettext("Disable 2FA"),
             classes: "fw-orange",
             click: () => {
                 activateWait()
                 app.apiConnectors.auth.twoFactorDisable()
-                    .then((json: any) => {
+                    .then((json: TwoFactorVerifyResponse) => {
                         if (json.status === "success") {
                             addAlert("success", json.message)
                             dialog.close()
@@ -158,7 +165,7 @@ export const twoFactorDisableDialog = (app: FrontendApp): any => {
         body: `<p>${gettext("Are you sure you want to disable two-factor authentication? This will reduce the security of your account.")}</p>`,
         buttons,
         icon: "exclamation-triangle"
-    } as any)
+    })
 
     dialog.open()
     return dialog
@@ -177,7 +184,7 @@ export const twoFactorLoginDialog = ({
     loginPage: LoginPage
     app: FrontendApp
 }): any => {
-    const buttons = [
+    const buttons: DialogButtonSpec[] = [
         {
             text: gettext("Verify"),
             classes: "fw-dark",
@@ -199,7 +206,7 @@ export const twoFactorLoginDialog = ({
                     remember,
                     twofactor
                 })
-                    .then((json: any) => {
+                    .then((json: TwoFactorVerifyResponse) => {
                         deactivateWait()
                         dialog.close()
                         loginPage.afterLogin(json)
@@ -220,7 +227,7 @@ export const twoFactorLoginDialog = ({
         buttons,
         icon: "shield-alt",
         width: 500
-    } as any)
+    })
 
     dialog.open()
     const codeInput = dialog.dialogEl.querySelector("#two-factor-code")
@@ -228,7 +235,7 @@ export const twoFactorLoginDialog = ({
         ;(codeInput as HTMLElement).addEventListener("keypress", (event: Event) => {
             if ((event as KeyboardEvent).key === "Enter") {
                 event.preventDefault()
-                buttons[0].click()
+                buttons[0].click!()
             }
         })
     }
@@ -237,7 +244,7 @@ export const twoFactorLoginDialog = ({
 
 export const checkTwoFactorStatus = (app: FrontendApp): Promise<boolean> => {
     return app.apiConnectors.auth.twoFactorStatus()
-        .then((json: any) => {
+        .then((json: TwoFactorStatusResponse) => {
             if (json.status === "success") {
                 return json.enabled
             }

@@ -21,6 +21,7 @@ import {
     displayContactType,
     respondInviteCell
 } from "./templates.js"
+import type {ContactsListResponse} from "../../api/index.js"
 import type {FrontendApp} from "../../types.js"
 
 export interface ContactsApp extends FrontendApp {
@@ -178,7 +179,7 @@ export class ContactsOverview {
             return cachedPromise.then(() => {})
         }
         return this.app.apiConnectors.contacts.list()
-            .then((json: any) => {
+            .then((json: ContactsListResponse) => {
                 return cachedPromise.then(oldJson => {
                     if (!deepEqual(json, oldJson)) {
                         this.updateIndexedDB(json)
