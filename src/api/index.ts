@@ -56,8 +56,8 @@ export interface UserProfileApi {
 // ---- AuthApi ----
 
 export interface AuthApi {
-    login(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; status: number}>
-    signup(data: Record<string, unknown>): Promise<{json: Record<string, unknown>}>
+    login(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; status: number; requiresEmailConfirmation?: boolean}>
+    signup(data: Record<string, unknown>): Promise<{json: Record<string, unknown>; requiresEmailConfirmation?: boolean}>
     passwordReset(data: {email: string}): Promise<unknown>
     passwordResetKeyGet(key: string): Promise<{url: string}>
     passwordResetKeyPost(url: string, data: Record<string, unknown>): Promise<unknown>

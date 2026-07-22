@@ -130,8 +130,8 @@ export class Signup extends PreloginPage {
                 sendData["invite_key"] = this.app.inviteKey
             }
             this.app.apiConnectors.auth.signup(sendData)
-                .then(({json}: any) => {
-                    if (json.location === "/api/account/confirm-email/") {
+                .then(({requiresEmailConfirmation}) => {
+                    if (requiresEmailConfirmation) {
                         fwContents.innerHTML = `<div class="fw-login-left">
                             <h1 class="fw-login-title">${gettext("Verify Your E-mail Address")}</h1>
                             <p>

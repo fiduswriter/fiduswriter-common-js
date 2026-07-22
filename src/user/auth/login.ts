@@ -181,33 +181,34 @@ export class LoginPage extends PreloginPage {
                 })
                 .then((result: any) => {
                     if (!result) return
-                    const {json, status} = result
+                    const {json, status, requiresEmailConfirmation} = result
                     if (status === 400) {
                         return
                     }
-                    this.afterLogin(json)
+                    this.afterLogin(json, requiresEmailConfirmation)
                 })
         })
     }
 
-    afterLogin(json: any): void {
+    afterLogin(json: any, requiresEmailConfirmation?: boolean): void {
         const currentLang = document.documentElement.lang
+        if (requiresEmailConfirmation) {
+            const contentsEl = document.querySelector(".fw-contents")
+            if (contentsEl) {
+                contentsEl.innerHTML = `<div class="fw-login-left">
+                    <h1 class="fw-login-title">${gettext("Verify Your E-mail Address")}</h1>
+                    <p>
+                        ${gettext("We have sent an e-mail to your email address for verification. Follow the link provided to finalize the signup process.")}
+                        <br />
+                        ${gettext("Please contact us if you do not receive it within a few minutes.")}
+                    </p>
+                </div>`
+            }
+            return
+        }
         if (json.html && json.html.length > 0) {
             const htmlValues = JSON.parse(json.html)
-
-            if (htmlValues.Location === "/api/account/confirm-email/") {
-                const contentsEl = document.querySelector(".fw-contents")
-                if (contentsEl) {
-                    contentsEl.innerHTML = `<div class="fw-login-left">
-                        <h1 class="fw-login-title">${gettext("Verify Your E-mail Address")}</h1>
-                        <p>
-                            ${gettext("We have sent an e-mail to your email address for verification. Follow the link provided to finalize the signup process.")}
-                            <br />
-                            ${gettext("Please contact us if you do not receive it within a few minutes.")}
-                        </p>
-                    </div>`
-                }
-            } else if (
+            if (
                 htmlValues.user?.language &&
                 htmlValues.user?.language !== currentLang
             ) {
