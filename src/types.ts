@@ -82,6 +82,7 @@ export interface FrontendApp extends App {
         init(): void
         close(): void
     }
+    language?: string
     ws_url_base?: string
     socialaccount_providers?: Array<Record<string, unknown>>
     inviteKey?: string

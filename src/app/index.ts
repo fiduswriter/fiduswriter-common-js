@@ -173,7 +173,7 @@ export class App {
                         case "confirm-email": {
                             const key = pathnameParts[3]
                             returnValue = new EmailConfirm(
-                                {app: this.config.app as PreloginApp, language: ""},
+                                {app: this.config.app as PreloginApp, language: this.config.language || ""},
                                 key
                             )
                             break
@@ -181,13 +181,13 @@ export class App {
                         case "password-reset":
                             returnValue = new PasswordResetRequest({
                                 app: this.config.app as PreloginApp,
-                                language: ""
+                                language: this.config.language || ""
                             })
                             break
                         case "change-password": {
                             const key = pathnameParts[3]
                             returnValue = new PasswordResetChangePassword(
-                                {app: this.config.app as PreloginApp, language: ""},
+                                {app: this.config.app as PreloginApp, language: this.config.language || ""},
                                 key
                             )
                             break
@@ -195,7 +195,7 @@ export class App {
                         case "sign-up":
                             returnValue = new Signup({
                                 app: this.config.app as PreloginApp,
-                                language: ""
+                                language: this.config.language || ""
                             })
                             break
                         default:
@@ -309,7 +309,7 @@ export class App {
                 open: (pathnameParts: string[]) => {
                     const url = `/${pathnameParts[2]}/`
                     return new FlatPage(
-                        {app: this.config.app as PreloginApp, language: ""},
+                        {app: this.config.app as PreloginApp, language: this.config.language || ""},
                         url
                     )
                 }
@@ -384,15 +384,15 @@ export class App {
         this.openLoginPage = () =>
             new LoginPage({
                 app: this.config.app as PreloginApp,
-                language: "",
+                language: this.config.language || "",
                 socialaccount_providers: this.config.socialaccount_providers ?? []
             })
         this.openOfflinePage = () =>
-            new OfflinePage({app: this.config.app as PreloginApp, language: ""})
+            new OfflinePage({app: this.config.app as PreloginApp, language: this.config.language || ""})
         this.openSetupPage = () =>
-            new SetupPage({app: this.config.app as PreloginApp, language: ""})
+            new SetupPage({app: this.config.app as PreloginApp, language: this.config.language || ""})
         this.open404Page = () =>
-            new Page404({app: this.config.app as PreloginApp, language: ""})
+            new Page404({app: this.config.app as PreloginApp, language: this.config.language || ""})
         this.handleSWUpdate = () => window.location.reload()
     }
 
