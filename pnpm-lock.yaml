@@ -9,26 +9,26 @@ importers:
   .:
     dependencies:
       '@fiduswriter/bibliography-manager':
-        specifier: file:../fiduswriter-bibliography-manager-js
-        version: file:../fiduswriter-bibliography-manager-js(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+        specifier: ^0.1.24
+        version: 0.1.24(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       '@fiduswriter/document':
-        specifier: file:../fiduswriter-document-js
-        version: file:../fiduswriter-document-js
+        specifier: ^0.2.31
+        version: 0.2.31
       '@fiduswriter/document-template-editor':
-        specifier: file:../fiduswriter-document-template-editor-js
-        version: file:../fiduswriter-document-template-editor-js
+        specifier: ^0.1.11
+        version: 0.1.11
       '@fiduswriter/editor':
-        specifier: file:../fiduswriter-editor-js
-        version: file:../fiduswriter-editor-js
+        specifier: ^0.1.52
+        version: 0.1.53
       '@fiduswriter/image-manager':
-        specifier: file:../fiduswriter-image-manager-js
-        version: file:../fiduswriter-image-manager-js(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+        specifier: ^0.1.17
+        version: 0.1.17(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       downloadjs:
         specifier: ^1.4.7
         version: 1.4.7
       fwtoolkit:
-        specifier: file:../fwtoolkit
-        version: file:../fwtoolkit(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+        specifier: ^0.2.3
+        version: 0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       jszip:
         specifier: ^3.10.1
         version: 3.10.1
@@ -72,6 +72,9 @@ importers:
       eslint:
         specifier: ^10.6.0
         version: 10.7.0
+      gettext-parser:
+        specifier: ^9.1.1
+        version: 9.1.1
       globals:
         specifier: ^15.15.0
         version: 15.15.0
@@ -326,23 +329,20 @@ packages:
     resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@fiduswriter/bibliography-manager@file:../fiduswriter-bibliography-manager-js':
-    resolution: {directory: ../fiduswriter-bibliography-manager-js, type: directory}
+  '@fiduswriter/bibliography-manager@0.1.24':
+    resolution: {integrity: sha512-nAwysrp1MVQQBzeOhEGX7Ku9k3XG1UAAR4aurBpAaHn+8DJUVQwnetAOaoXNS9RgedUz4liW3PVh1zt+8l5whw==}
 
-  '@fiduswriter/document-template-editor@file:../fiduswriter-document-template-editor-js':
-    resolution: {directory: ../fiduswriter-document-template-editor-js, type: directory}
+  '@fiduswriter/document-template-editor@0.1.11':
+    resolution: {integrity: sha512-EQRS01RRKkr7SPCvzcYximI6Fk3EMh23MxdK3rV7C10WHcvTMnVNmG3pCFV1bQvp8rizMKPUuE+hM3JoTMjcoQ==}
 
-  '@fiduswriter/document@0.2.29':
-    resolution: {integrity: sha512-SskPWpWxVIL2ZHWVfnUMja6mtOru2gY8Z11taYM1XYRcVmSBu+X5wRjUBAa/E8fyzMP7W94n3gLgc5b7ScPLgw==}
+  '@fiduswriter/document@0.2.31':
+    resolution: {integrity: sha512-5tQ+Dx/jU3ATU+xORS33lhj3MeE39zKpNhZuvSQr8IBE+UkhwodZCSGVLz95w9w6bx4xpriLdvJmLkYHOjynsg==}
 
-  '@fiduswriter/document@file:../fiduswriter-document-js':
-    resolution: {directory: ../fiduswriter-document-js, type: directory}
+  '@fiduswriter/editor@0.1.53':
+    resolution: {integrity: sha512-y2E7TtAwm+ZH8yX3C1LTJnmctxmHvPYWnZwARUWILSLdrOpI6a7ttAPpCU4iS0BnZTv4E/EWi075Hba/ksTlTA==}
 
-  '@fiduswriter/editor@file:../fiduswriter-editor-js':
-    resolution: {directory: ../fiduswriter-editor-js, type: directory}
-
-  '@fiduswriter/image-manager@file:../fiduswriter-image-manager-js':
-    resolution: {directory: ../fiduswriter-image-manager-js, type: directory}
+  '@fiduswriter/image-manager@0.1.17':
+    resolution: {integrity: sha512-d4orI2x135KEjo4AU+olU4Ql8u9ld/yyyqWdBUFaQ1h0et4Hw4P4pLyqKwZ98yVLPXCX0SF1E5+2wg3AkvqntA==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -982,6 +982,10 @@ packages:
   config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
 
+  content-type@1.0.5:
+    resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
+    engines: {node: '>= 0.6'}
+
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
@@ -1072,6 +1076,9 @@ packages:
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
 
   entities@7.0.1:
     resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
@@ -1238,8 +1245,8 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
-  fwtoolkit@0.2.0:
-    resolution: {integrity: sha512-Q28sFxwHPbJi/oQ+rLOGf38xHS92ddniI5wM0Rz/sILJsGwk77IE72XSRc7ho1aOBbh1yo21Mbb1PalS8b7NMw==}
+  fwtoolkit@0.2.3:
+    resolution: {integrity: sha512-cuwom2YjYDh4nVrskYh+IXsDIwRB7eGzI2ouelK0tuSUqTpIIThXkN9jwJxFXE/r/BljMko1oojxOz6y9V1f3g==}
     peerDependencies:
       prosemirror-commands: ^1.7.0
       prosemirror-history: ^1.4.0
@@ -1273,6 +1280,10 @@ packages:
   get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
+
+  gettext-parser@9.1.1:
+    resolution: {integrity: sha512-ZLeqWPz9OMNrTgMuww0C22kkcNqis+e4059R94t7L7ERlZ2rUNpiDbaAUus+esBC6uBAQWbS9N+R5vJIJg//lw==}
+    engines: {node: '>=20'}
 
   glob-parent@6.0.2:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
@@ -1322,6 +1333,10 @@ packages:
     resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
     engines: {node: '>=18'}
     hasBin: true
+
+  iconv-lite@0.6.3:
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
+    engines: {node: '>=0.10.0'}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -1977,6 +1992,9 @@ packages:
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
+  safer-buffer@2.1.2:
+    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
@@ -2575,11 +2593,11 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@fiduswriter/bibliography-manager@file:../fiduswriter-bibliography-manager-js(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)':
+  '@fiduswriter/bibliography-manager@0.1.24(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)':
     dependencies:
       bibliojson: 4.0.4
       fix-utf8: 2.0.1
-      fwtoolkit: file:../fwtoolkit(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      fwtoolkit: 0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       prosemirror-commands: 1.7.1
       prosemirror-model: 1.25.11
       simple-datatables: 10.2.0
@@ -2590,12 +2608,12 @@ snapshots:
       - prosemirror-state
       - prosemirror-view
 
-  '@fiduswriter/document-template-editor@file:../fiduswriter-document-template-editor-js':
+  '@fiduswriter/document-template-editor@0.1.11':
     dependencies:
-      '@fiduswriter/document': 0.2.29
+      '@fiduswriter/document': 0.2.31
       downloadjs: 1.4.7
       fast-deep-equal: 3.1.3
-      fwtoolkit: file:../fwtoolkit(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      fwtoolkit: 0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       jszip: 3.10.1
       prosemirror-commands: 1.7.1
       prosemirror-example-setup: 1.2.3
@@ -2610,7 +2628,7 @@ snapshots:
       prosemirror-view: 1.42.1
       sortablejs: 1.15.7
 
-  '@fiduswriter/document@0.2.29':
+  '@fiduswriter/document@0.2.31':
     dependencies:
       '@prettier/plugin-xml': 3.4.2(prettier@3.9.6)
       '@vivliostyle/print': 2.44.1
@@ -2619,7 +2637,7 @@ snapshots:
       downloadjs: 1.4.7
       fast-deep-equal: 3.1.3
       fast-xml-parser: 5.10.1
-      fwtoolkit: 0.2.0(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      fwtoolkit: 0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       jszip: 3.10.1
       mathlive: 0.104.2
       mathml-to-latex: 1.8.0
@@ -2639,40 +2657,11 @@ snapshots:
       prosemirror-view: 1.42.1
       w3c-keyname: 2.2.8
 
-  '@fiduswriter/document@file:../fiduswriter-document-js':
+  '@fiduswriter/editor@0.1.53':
     dependencies:
-      '@prettier/plugin-xml': 3.4.2(prettier@3.9.6)
-      '@vivliostyle/print': 2.44.1
-      bibliojson: 4.0.4
-      citeproc-plus: 2.0.4
-      downloadjs: 1.4.7
-      fast-deep-equal: 3.1.3
-      fast-xml-parser: 5.10.1
-      fwtoolkit: 0.2.0(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
-      jszip: 3.10.1
-      mathlive: 0.104.2
-      mathml-to-latex: 1.8.0
-      mathml2omml: 0.5.0
-      orderedmap: 2.1.1
-      prettier: 3.9.6
-      prosemirror-commands: 1.7.1
-      prosemirror-gapcursor: 1.4.1
-      prosemirror-history: 1.5.0
-      prosemirror-keymap: 1.2.3
-      prosemirror-model: 1.25.11
-      prosemirror-schema-basic: 1.2.4
-      prosemirror-schema-list: 1.5.1
-      prosemirror-state: 1.4.4
-      prosemirror-tables: 1.8.5
-      prosemirror-transform: 1.12.0
-      prosemirror-view: 1.42.1
-      w3c-keyname: 2.2.8
-
-  '@fiduswriter/editor@file:../fiduswriter-editor-js':
-    dependencies:
-      '@fiduswriter/bibliography-manager': file:../fiduswriter-bibliography-manager-js(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
-      '@fiduswriter/document': file:../fiduswriter-document-js
-      '@fiduswriter/image-manager': file:../fiduswriter-image-manager-js(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      '@fiduswriter/bibliography-manager': 0.1.24(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      '@fiduswriter/document': 0.2.31
+      '@fiduswriter/image-manager': 0.1.17(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       cropperjs: 1.6.2
       diff: 5.2.2
       diff-dom: 5.2.1
@@ -2680,7 +2669,7 @@ snapshots:
       fast-xml-parser: 4.5.7
       fastdom: 1.0.12
       fix-utf8: 2.0.1
-      fwtoolkit: file:../fwtoolkit(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
+      fwtoolkit: 0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)
       jszip: 3.10.1
       mathml-to-latex: 1.8.0
       mathml2omml: 0.5.0
@@ -2706,7 +2695,7 @@ snapshots:
       rfc6902: 5.2.0
       sortablejs: 1.15.7
 
-  '@fiduswriter/image-manager@file:../fiduswriter-image-manager-js(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)':
+  '@fiduswriter/image-manager@0.1.17(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1)':
     dependencies:
       bibliojson: 4.0.4
       cropperjs: 1.6.2
@@ -3458,6 +3447,8 @@ snapshots:
       ini: 1.3.8
       proto-list: 1.2.4
 
+  content-type@1.0.5: {}
+
   convert-source-map@2.0.0: {}
 
   core-js-pure@3.49.0: {}
@@ -3516,6 +3507,10 @@ snapshots:
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
+
+  encoding@0.1.13:
+    dependencies:
+      iconv-lite: 0.6.3
 
   entities@7.0.1: {}
 
@@ -3703,7 +3698,7 @@ snapshots:
 
   function-bind@1.1.2: {}
 
-  fwtoolkit@0.2.0(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1):
+  fwtoolkit@0.2.3(prosemirror-commands@1.7.1)(prosemirror-history@1.5.0)(prosemirror-keymap@1.2.3)(prosemirror-model@1.25.11)(prosemirror-state@1.4.4)(prosemirror-view@1.42.1):
     dependencies:
       diff-dom: 5.2.1
       jszip: 3.10.1
@@ -3736,6 +3731,11 @@ snapshots:
   get-package-type@0.1.0: {}
 
   get-stream@6.0.1: {}
+
+  gettext-parser@9.1.1:
+    dependencies:
+      content-type: 1.0.5
+      encoding: 0.1.13
 
   glob-parent@6.0.2:
     dependencies:
@@ -3796,6 +3796,10 @@ snapshots:
   human-signals@2.1.0: {}
 
   husky@9.1.7: {}
+
+  iconv-lite@0.6.3:
+    dependencies:
+      safer-buffer: 2.1.2
 
   ignore@5.3.2: {}
 
@@ -4668,6 +4672,8 @@ snapshots:
   rope-sequence@1.3.4: {}
 
   safe-buffer@5.1.2: {}
+
+  safer-buffer@2.1.2: {}
 
   semver@6.3.1: {}
 
